@@ -1,5 +1,6 @@
 # agent/llm_client.py
 
+from typing import Any
 import openai
 
 # This is the client that will connect to our local vLLM server.
@@ -12,17 +13,15 @@ client = openai.OpenAI(
 # This is the model name we used to launch vLLM.
 MODEL_NAME = "Qwen/Qwen1.5-1.8B-Chat"
 
-def get_llm_response(prompt: str) -> str:
+def get_llm_response(messages: list[Any]) -> str:
     """
     Sends a full prompt to the local vLLM server and returns the raw response.
     This version uses a "user" role for the entire prompt, suitable for ReAct-style agents.
     """
     try:
-        response = client.chat.completions.create(
+        response: Any = client.chat.completions.create(
             model=MODEL_NAME,
-            messages=[
-                {"role": "user", "content": prompt},
-            ],
+            messages=messages,
             temperature=0.1,
             max_tokens=500,
             stop=["Observation:"]

@@ -1,18 +1,10 @@
-# tools/functions.py
 
 import os
 import requests
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
+from base import TAVILY_API_KEY
 
-# Load environment variables from .env file
-load_dotenv()
-
-# --- Tool 1: Web Search using Tavily AI ---
-# tools/functions.py
-
-# ... (keep other imports and functions) ...
 
 def web_search(query: str) -> str:
     """
@@ -24,13 +16,13 @@ def web_search(query: str) -> str:
         response = requests.post(
             "https://api.tavily.com/search",
             json={
-                "api_key": os.getenv("TAVILY_API_KEY"),
+                "api_key": TAVILY_API_KEY,
                 "query": query,
                 "search_depth": "basic",
                 "include_answer": True, # Get a summary answer
                 "include_raw_content": False,
                 "max_results": 5,
-            },
+            },  
         )
         response.raise_for_status()
         data = response.json()
@@ -90,3 +82,5 @@ def finish(answer: str) -> str:
     """
     print(f"TOOL: Finishing with answer: '{answer}'")
     return answer
+
+
